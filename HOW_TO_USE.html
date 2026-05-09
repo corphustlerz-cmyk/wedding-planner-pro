@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Use — Wedding Planner Pro Web App</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #FDF8F4; color: #2C3E50; font-size: 14px; line-height: 1.6; }
+  .page { max-width: 780px; margin: 0 auto; padding: 48px 32px; }
+
+  /* Header */
+  .header { text-align: center; padding-bottom: 36px; border-bottom: 3px solid #7BA7BC; margin-bottom: 40px; }
+  .brand { font-family: 'Playfair Display', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #C9A96E; font-weight: 600; margin-bottom: 14px; }
+  .title { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: #2C3E50; line-height: 1.2; margin-bottom: 10px; }
+  .subtitle { font-size: 15px; color: #5A8FA0; font-weight: 500; }
+
+  /* Steps */
+  .steps { margin-bottom: 40px; }
+  .step { display: flex; gap: 20px; margin-bottom: 28px; align-items: flex-start; }
+  .step-num { flex: 0 0 42px; width: 42px; height: 42px; background: linear-gradient(135deg, #7BA7BC, #5A8FA0); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; flex-shrink: 0; box-shadow: 0 4px 12px rgba(123,167,188,0.3); }
+  .step-body { padding-top: 4px; }
+  .step-title { font-weight: 700; font-size: 15px; color: #2C3E50; margin-bottom: 4px; }
+  .step-desc { color: #5A6E7F; font-size: 13px; }
+  .step-desc code { background: #E8F1F5; padding: 2px 7px; border-radius: 4px; font-size: 12px; color: #3A7890; font-family: monospace; }
+
+  /* Feature table */
+  .section-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; color: #2C3E50; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #E8F1F5; }
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 40px; }
+  .feature { background: #fff; border: 1px solid #E8F1F5; border-left: 4px solid #7BA7BC; border-radius: 8px; padding: 14px 16px; }
+  .feature-icon { font-size: 20px; margin-bottom: 6px; }
+  .feature-name { font-weight: 700; font-size: 13px; color: #2C3E50; }
+  .feature-desc { font-size: 12px; color: #6B7C8F; margin-top: 3px; }
+
+  /* Tips */
+  .tips { background: linear-gradient(135deg, #E8F1F5, #F4F9FB); border-radius: 12px; padding: 24px 28px; margin-bottom: 40px; }
+  .tip { display: flex; gap: 12px; margin-bottom: 14px; }
+  .tip:last-child { margin-bottom: 0; }
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { font-size: 13px; color: #3A5060; }
+  .tip-text strong { color: #2C3E50; }
+
+  /* Alert box */
+  .alert { background: #FFF9EE; border: 1px solid #F0D88A; border-radius: 8px; padding: 16px 20px; margin-bottom: 32px; display: flex; gap: 12px; align-items: flex-start; }
+  .alert-icon { font-size: 20px; flex-shrink: 0; }
+  .alert-text { font-size: 13px; color: #7A5F10; line-height: 1.6; }
+
+  /* Footer */
+  .footer { text-align: center; padding-top: 32px; border-top: 1px solid #E8F1F5; }
+  .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; color: #2C3E50; font-weight: 600; margin-bottom: 6px; }
+  .footer-link { color: #7BA7BC; font-size: 13px; text-decoration: none; font-weight: 500; }
+  .footer-link:hover { text-decoration: underline; }
+  .stars { color: #C9A96E; font-size: 18px; margin-top: 12px; }
+
+  @media print {
+    body { background: white; }
+    .page { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="brand">The Bridal Desk · TheBridalDesk.etsy.com</div>
+    <div class="title">Wedding Planner Pro</div>
+    <div class="subtitle">Web App Edition — Quick Start Guide</div>
+  </div>
+
+  <!-- UNLOCK CODE BOX -->
+  <div style="background:linear-gradient(135deg,#1E2B3A,#2C3E50);border-radius:14px;padding:28px 32px;margin-bottom:36px;text-align:center;color:#fff">
+    <div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:#C9A96E;font-weight:700;margin-bottom:10px">Your Unlock Code</div>
+    <div style="font-family:'Playfair Display',serif;font-size:42px;font-weight:700;letter-spacing:6px;color:#fff;margin-bottom:10px">BRIDE2026</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.6">Enter this code when you open <code style="background:rgba(255,255,255,0.12);padding:2px 8px;border-radius:4px">WeddingPlannerPro_WebApp.html</code> for the first time.<br>You'll only need to enter it once — it saves automatically.</div>
+  </div>
+
+  <!-- HOW TO OPEN -->
+  <div class="steps">
+    <div class="section-title">🚀 Getting Started (3 Easy Steps)</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Open the File & Enter Your Code</div>
+        <div class="step-desc">
+          Double-click <code>WeddingPlannerPro_WebApp.html</code> — it opens in Chrome, Safari, Firefox, or Edge.
+          Enter your unlock code <strong>BRIDE2026</strong> and click "Unlock My Planner".
+          You'll only need to do this once — your browser remembers it forever.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Go to Settings First</div>
+        <div class="step-desc">
+          Click <strong>Settings</strong> in the left sidebar. Enter your names, wedding date, venue, and total budget.
+          Hit <strong>Save Changes</strong> — your details will update across every tab instantly, including the live countdown.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Pick Your Color Theme</div>
+        <div class="step-desc">
+          Still in Settings, scroll down to <strong>Color Theme</strong>. Choose from 8 palettes — Dusty Blue, Sage Green,
+          Blush Pink, Lavender, Neutral Taupe, Rose Gold, Classic Navy, or Emerald. Your whole dashboard
+          recolors instantly and saves automatically.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERT -->
+  <div class="alert">
+    <div class="alert-icon">💾</div>
+    <div class="alert-text">
+      <strong>Your data saves automatically</strong> in your browser's local storage every time you make a change.
+      Always keep the <code>index.html</code> file in a safe place (iCloud, Google Drive, or Desktop) as a backup.
+      Use the <strong>"Export Full PDF"</strong> button in the top bar to export all 18 tabs as a complete, branded PDF — then choose <strong>Save as PDF</strong> in the print dialog that appears.
+    </div>
+  </div>
+
+  <!-- FEATURES GRID -->
+  <div class="section-title" style="margin-bottom:16px">📋 What's Inside — All 18 Tabs</div>
+  <div class="features" style="margin-bottom:40px">
+    <div class="feature"><div class="feature-icon">🏠</div><div class="feature-name">Home Dashboard</div><div class="feature-desc">Live countdown, KPI cards, budget donut chart, quick navigation</div></div>
+    <div class="feature"><div class="feature-icon">⚙️</div><div class="feature-name">Settings</div><div class="feature-desc">Wedding details, venue map, color theme picker</div></div>
+    <div class="feature"><div class="feature-icon">💰</div><div class="feature-name">Budget Dashboard</div><div class="feature-desc">Live totals, % used, category breakdown charts</div></div>
+    <div class="feature"><div class="feature-icon">📋</div><div class="feature-name">Expense Tracker</div><div class="feature-desc">Every line item with auto Paid/Pending status</div></div>
+    <div class="feature"><div class="feature-icon">👥</div><div class="feature-name">Guest List</div><div class="feature-desc">Full guest database with RSVP, meal, table, +1</div></div>
+    <div class="feature"><div class="feature-icon">✉️</div><div class="feature-name">RSVP Tracker</div><div class="feature-desc">Live inline status updates, table assignments</div></div>
+    <div class="feature"><div class="feature-icon">🪑</div><div class="feature-name">Seating Chart</div><div class="feature-desc">Drag-and-drop guests between tables</div></div>
+    <div class="feature"><div class="feature-icon">🏪</div><div class="feature-name">Vendor Tracker</div><div class="feature-desc">All vendors with balance, payment status, contacts</div></div>
+    <div class="feature"><div class="feature-icon">💳</div><div class="feature-name">Vendor Payments</div><div class="feature-desc">Visual payment progress bars per vendor</div></div>
+    <div class="feature"><div class="feature-icon">✅</div><div class="feature-name">Planning Checklist</div><div class="feature-desc">32 pre-loaded tasks across 7 planning phases</div></div>
+    <div class="feature"><div class="feature-icon">📅</div><div class="feature-name">Day-Of Timeline</div><div class="feature-desc">Every moment from 8AM to midnight, color-coded</div></div>
+    <div class="feature"><div class="feature-icon">📸</div><div class="feature-name">Photography</div><div class="feature-desc">25 must-capture shots across 7 phases</div></div>
+    <div class="feature"><div class="feature-icon">🎵</div><div class="feature-name">Music & DJ</div><div class="feature-desc">Playlist for every wedding moment</div></div>
+    <div class="feature"><div class="feature-icon">🥂</div><div class="feature-name">Bachelorette</div><div class="feature-desc">Event planner with guest list & vendor contacts</div></div>
+    <div class="feature"><div class="feature-icon">🌸</div><div class="feature-name">Bridal Shower</div><div class="feature-desc">Event planner with guest list & vendor contacts</div></div>
+    <div class="feature"><div class="feature-icon">🍽️</div><div class="feature-name">Rehearsal Dinner</div><div class="feature-desc">Event planner with guest list & vendor contacts</div></div>
+    <div class="feature"><div class="feature-icon">✈️</div><div class="feature-name">Honeymoon</div><div class="feature-desc">Trip details, confirmation numbers, packing list</div></div>
+    <div class="feature"><div class="feature-icon">📞</div><div class="feature-name">Day-Of Contacts</div><div class="feature-desc">Critical phone numbers for the big day</div></div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section-title" style="margin-bottom:16px">💡 Pro Tips</div>
+  <div class="tips">
+    <div class="tip"><div class="tip-icon">🎨</div><div class="tip-text"><strong>Match your theme:</strong> Try all 8 color palettes in Settings — each one completely recolors your entire dashboard in real time.</div></div>
+    <div class="tip"><div class="tip-icon">🪑</div><div class="tip-text"><strong>Seating chart:</strong> Drag and drop guest cards between tables. Click "+ Add Table" to create new tables. Click ✕ on a table to remove it and move guests back to Unassigned.</div></div>
+    <div class="tip"><div class="tip-icon">💰</div><div class="tip-text"><strong>Expense status:</strong> The Paid/Pending badge updates automatically — once your Actual amount equals or exceeds the Budgeted amount, it flips to Paid.</div></div>
+    <div class="tip"><div class="tip-icon">📄</div><div class="tip-text"><strong>Export your full planner as PDF:</strong> Click <strong>"Export Full PDF"</strong> in the top bar. A print dialog will open — set the Destination to <strong>Save as PDF</strong>, then click Save. All 18 tabs export as one complete, branded document.</div></div>
+    <div class="tip"><div class="tip-icon">🗺️</div><div class="tip-text"><strong>Venue map:</strong> In Settings, type your venue address and wait a moment — a live Google Map will appear below automatically.</div></div>
+    <div class="tip"><div class="tip-icon">📱</div><div class="tip-text"><strong>Works on any device:</strong> Open <code>index.html</code> on your phone or tablet browser for a responsive mobile experience.</div></div>
+    <div class="tip"><div class="tip-icon">🔄</div><div class="tip-text"><strong>Fresh start:</strong> Click "Reset" in the top bar to clear all data and start from scratch. Your color theme is preserved.</div></div>
+    <div class="tip"><div class="tip-icon">☁️</div><div class="tip-text"><strong>Sync across devices:</strong> Store <code>index.html</code> in iCloud Drive or Google Drive and open it on any device — data saves per-browser via localStorage.</div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">The Bridal Desk</div>
+    <div style="font-size:12px;color:#6B7C8F;margin-bottom:8px">Questions or need help? Message us on Etsy — we respond within 24 hours.</div>
+    <a href="https://TheBridalDesk.etsy.com" class="footer-link">TheBridalDesk.etsy.com</a>
+    <div class="stars">★ ★ ★ ★ ★</div>
+    <div style="font-size:11px;color:#94A3B8;margin-top:8px">Your review means everything to us — thank you for choosing TheBridalDesk 🤍</div>
+  </div>
+
+</div>
+</body>
+</html>
