@@ -1070,6 +1070,51 @@ body {
   .nav-grid { grid-template-columns: repeat(3, 1fr); }
   .form-grid, .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRINT / EXPORT PDF
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  /* Hide all chrome */
+  #gate, .sidebar, .topbar, .fab, .toast,
+  .btn-danger, .btn[onclick*="open"], .btn[onclick*="edit"],
+  .btn[onclick*="delete"], .btn[onclick*="add"],
+  .topbar-actions { display: none !important; }
+
+  /* Full-width content, no sidebar offset */
+  body, html { margin: 0; padding: 0; background: #fff; }
+  .main-content { margin-left: 0 !important; padding: 0 !important; width: 100% !important; }
+
+  /* Show ALL tabs, each starting on a new page */
+  .tab { display: block !important; visibility: visible !important; page-break-after: always; }
+  .tab:last-of-type { page-break-after: avoid; }
+
+  /* Print cover header (injected by exportData) */
+  #print-cover {
+    display: block !important;
+    text-align: center;
+    padding: 40px 0 28px;
+    border-bottom: 3px solid #7BA7BC;
+    margin-bottom: 24px;
+    page-break-after: avoid;
+  }
+
+  /* Section label injected before each tab */
+  .print-section-label {
+    display: block !important;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2C3E50;
+    padding: 10px 0 8px;
+    border-bottom: 2px solid #7BA7BC;
+    margin-bottom: 14px;
+  }
+
+  /* Keep tables readable */
+  table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  th, td { padding: 4px 6px; }
+}
 </style>
 </head>
 <body>
@@ -1183,7 +1228,7 @@ body {
       <div class="page-sub" id="page-sub">Your wedding planning command center</div>
     </div>
     <div class="topbar-actions">
-      <button class="btn btn-sm" onclick="exportData()">⬇ Export PDF</button>
+      <button class="btn btn-sm" onclick="exportData()">⬇ Export Full PDF</button>
       <button class="btn btn-sm btn-danger" onclick="resetData()">🗑 Reset</button>
     </div>
   </div>
@@ -2384,7 +2429,10 @@ function renderGuests() {
         <td>${escapeHtml(g.meal || '—')}</td>
         <td>${g.plusOne ? '✓' : ''}</td>
         <td>${escapeHtml(g.table || '—')}</td>
-        <td><button class="btn btn-sm btn-danger" onclick="deleteGuest(${g.id})">🗑</button></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-sm" onclick="editGuest(${g.id})" title="Edit" style="margin-right:4px">✏️</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteGuest(${g.id})" title="Delete">🗑</button>
+        </td>
       </tr>`;
   }).join('');
 
@@ -2433,6 +2481,53 @@ function deleteGuest(id) {
   if (!confirm('Delete this guest?')) return;
   state.guests = state.guests.filter(g => g.id !== id);
   save(); renderAll();
+}
+
+function editGuest(id) {
+  const g = state.guests.find(g => g.id === id);
+  if (!g) return;
+  openModal('Edit Guest', `
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="m-g-first" value="${escapeHtml(g.firstName)}"></div>
+      <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="m-g-last" value="${escapeHtml(g.lastName)}"></div>
+      <div class="form-group"><label class="form-label">Side</label>
+        <select class="form-select" id="m-g-side">
+          <option ${g.side==='Bride'?'selected':''}>Bride</option>
+          <option ${g.side==='Groom'?'selected':''}>Groom</option>
+          <option ${g.side==='Both'?'selected':''}>Both</option>
+        </select></div>
+      <div class="form-group"><label class="form-label">Relationship</label><input class="form-input" id="m-g-rel" value="${escapeHtml(g.relationship)}"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="m-g-phone" value="${escapeHtml(g.phone||'')}"></div>
+      <div class="form-group"><label class="form-label">RSVP Status</label>
+        <select class="form-select" id="m-g-rsvp">
+          <option ${g.rsvp==='Pending'?'selected':''}>Pending</option>
+          <option ${g.rsvp==='Yes'?'selected':''}>Yes</option>
+          <option ${g.rsvp==='No'?'selected':''}>No</option>
+        </select></div>
+      <div class="form-group"><label class="form-label">Meal Choice</label>
+        <select class="form-select" id="m-g-meal">
+          <option value="" ${!g.meal?'selected':''}>—</option>
+          <option ${g.meal==='Chicken'?'selected':''}>Chicken</option>
+          <option ${g.meal==='Beef'?'selected':''}>Beef</option>
+          <option ${g.meal==='Fish'?'selected':''}>Fish</option>
+          <option ${g.meal==='Vegetarian'?'selected':''}>Vegetarian</option>
+          <option ${g.meal==='Vegan'?'selected':''}>Vegan</option>
+          <option ${g.meal==='Kids'?'selected':''}>Kids</option>
+        </select></div>
+      <div class="form-group"><label class="form-label">Table #</label><input class="form-input" id="m-g-table" value="${escapeHtml(g.table||'')}"></div>
+      <div class="form-group full"><label style="font-size:13px"><input type="checkbox" id="m-g-plus" ${g.plusOne?'checked':''}> Plus One</label></div>
+    </div>`, () => {
+      g.firstName   = document.getElementById('m-g-first').value;
+      g.lastName    = document.getElementById('m-g-last').value;
+      g.side        = document.getElementById('m-g-side').value;
+      g.relationship= document.getElementById('m-g-rel').value;
+      g.phone       = document.getElementById('m-g-phone').value;
+      g.rsvp        = document.getElementById('m-g-rsvp').value;
+      g.meal        = document.getElementById('m-g-meal').value;
+      g.plusOne     = document.getElementById('m-g-plus').checked;
+      g.table       = document.getElementById('m-g-table').value;
+      save(); renderAll();
+    });
 }
 
 function renderRSVP() {
@@ -2797,7 +2892,10 @@ function renderTimeline() {
         <div class="timeline-meta">📍 ${escapeHtml(t.location || '')} · 👤 ${escapeHtml(t.responsible || '')}</div>
       </div>
       <div class="timeline-phase"><span class="badge ${PHASE_COLORS[t.phase] || 'badge-muted'}">${escapeHtml(t.phase || '')}</span></div>
-      <button class="btn btn-sm btn-danger" onclick="deleteTimelineEvent(${t.id})">🗑</button>
+      <div style="display:flex;gap:4px">
+        <button class="btn btn-sm" onclick="editTimelineEvent(${t.id})" title="Edit">✏️</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTimelineEvent(${t.id})" title="Delete">🗑</button>
+      </div>
     </div>`).join('');
 }
 
@@ -2837,6 +2935,32 @@ function deleteTimelineEvent(id) {
   if (!confirm('Delete this event?')) return;
   state.timeline = state.timeline.filter(t => t.id !== id);
   save(); renderAll();
+}
+
+function editTimelineEvent(id) {
+  const t = state.timeline.find(t => t.id === id);
+  if (!t) return;
+  openModal('Edit Timeline Event', `
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-input" id="m-tl-time" value="${escapeHtml(t.time || '')}"></div>
+      <div class="form-group"><label class="form-label">Phase</label>
+        <select class="form-select" id="m-tl-phase">
+          <option ${t.phase==='Prep'?'selected':''}>Prep</option>
+          <option ${t.phase==='Ceremony'?'selected':''}>Ceremony</option>
+          <option ${t.phase==='Cocktails'?'selected':''}>Cocktails</option>
+          <option ${t.phase==='Reception'?'selected':''}>Reception</option>
+        </select></div>
+      <div class="form-group full"><label class="form-label">Event</label><input class="form-input" id="m-tl-event" value="${escapeHtml(t.event || '')}"></div>
+      <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="m-tl-loc" value="${escapeHtml(t.location || '')}"></div>
+      <div class="form-group"><label class="form-label">Responsible</label><input class="form-input" id="m-tl-resp" value="${escapeHtml(t.responsible || '')}"></div>
+    </div>`, () => {
+      t.time        = document.getElementById('m-tl-time').value;
+      t.phase       = document.getElementById('m-tl-phase').value;
+      t.event       = document.getElementById('m-tl-event').value;
+      t.location    = document.getElementById('m-tl-loc').value;
+      t.responsible = document.getElementById('m-tl-resp').value;
+      save(); renderAll();
+    });
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -3203,42 +3327,68 @@ function closeModal() {
    EXPORT / RESET
    ═══════════════════════════════════════════════════════════════════════════ */
 function exportData() {
-  const activeTab = document.querySelector('.tab.active');
-  if (!activeTab) return;
-  const title = document.getElementById('page-title').textContent;
   const coupleName = `${state.config.partner1} & ${state.config.partner2}`;
   const weddingDate = state.config.weddingDate
     ? new Date(state.config.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     : '';
-  showToast('Generating PDF... ⏳');
 
-  // Build a print-friendly wrapper
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'padding:20px;background:#fff;font-family:Inter,sans-serif;color:#2C3E50;width:780px';
-  wrapper.innerHTML = `
-    <div style="text-align:center;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid #7BA7BC">
-      <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#2C3E50">${escapeHtml(coupleName)}</div>
-      <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#C9A96E;margin-top:6px;font-weight:600">${escapeHtml(weddingDate)}</div>
-      <div style="font-family:'Playfair Display',serif;font-size:18px;color:#5A8FA0;margin-top:12px">${escapeHtml(title)}</div>
-      <div style="font-size:11px;color:#6B7C8F;margin-top:4px">Exported ${new Date().toLocaleDateString()} · TheBridalDesk.etsy.com</div>
-    </div>`;
-  const clone = activeTab.cloneNode(true);
-  // Remove action buttons from the clone for clean PDF
-  clone.querySelectorAll('.btn-danger, .btn[onclick*="open"], .btn[onclick*="edit"], .btn[onclick*="delete"]').forEach(el => el.remove());
-  wrapper.appendChild(clone);
-
-  const opt = {
-    margin: [10, 8, 10, 8],
-    filename: `wedding-${activeTab.id.replace('tab-', '')}-${new Date().toISOString().split('T')[0]}.pdf`,
-    image: { type: 'jpeg', quality: 0.95 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#FFFFFF' },
-    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
-    pagebreak: { mode: ['css', 'legacy'] }
+  const TAB_LABELS = {
+    'tab-home':         '🏠 Home Dashboard',
+    'tab-settings':     '⚙️ Settings',
+    'tab-budget':       '💰 Budget Dashboard',
+    'tab-expenses':     '📋 Expense Tracker',
+    'tab-guests':       '👥 Guest List',
+    'tab-rsvp':         '✉️ RSVP & Meal Tracker',
+    'tab-seating':      '🪑 Seating Chart',
+    'tab-vendors':      '🏪 Vendor Tracker',
+    'tab-payments':     '💳 Vendor Payments',
+    'tab-checklist':    '✅ Planning Checklist',
+    'tab-timeline':     '📅 Day-Of Timeline',
+    'tab-photography':  '📸 Photography',
+    'tab-music':        '🎵 Music & DJ',
+    'tab-bachelorette': '🥂 Bachelorette',
+    'tab-shower':       '🌸 Bridal Shower',
+    'tab-rehearsal':    '🍽️ Rehearsal Dinner',
+    'tab-honeymoon':    '✈️ Honeymoon',
+    'tab-contacts':     '📞 Day-Of Contacts'
   };
 
-  html2pdf().set(opt).from(wrapper).save()
-    .then(() => showToast('PDF exported ✓'))
-    .catch(err => { console.error(err); showToast('Export failed'); });
+  // Inject cover block (hidden on screen, shown in print via CSS)
+  let cover = document.getElementById('print-cover');
+  if (!cover) {
+    cover = document.createElement('div');
+    cover.id = 'print-cover';
+    cover.style.display = 'none';
+    document.body.insertBefore(cover, document.body.firstChild);
+  }
+  cover.innerHTML = `
+    <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:#2C3E50">${escapeHtml(coupleName)}</div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#C9A96E;margin-top:8px;font-weight:600">${escapeHtml(weddingDate)}</div>
+    <div style="font-family:'Playfair Display',serif;font-size:20px;color:#5A8FA0;margin-top:10px">Complete Wedding Planner</div>
+    <div style="font-size:10px;color:#6B7C8F;margin-top:6px">Exported ${new Date().toLocaleDateString()} · TheBridalDesk.etsy.com</div>`;
+
+  // Inject a section label before each tab (hidden on screen, shown in print)
+  document.querySelectorAll('section.tab').forEach(tab => {
+    let label = tab.previousElementSibling;
+    if (!label || !label.classList.contains('print-section-label')) {
+      label = document.createElement('div');
+      label.className = 'print-section-label';
+      label.style.display = 'none';
+      tab.parentNode.insertBefore(label, tab);
+    }
+    label.textContent = TAB_LABELS[tab.id] || tab.id.replace('tab-', '');
+  });
+
+  // Update document title so print dialog shows a useful filename suggestion
+  const origTitle = document.title;
+  document.title = `${coupleName} — Wedding Planner — ${new Date().toLocaleDateString()}`;
+
+  // Restore title after print dialog closes
+  window.onafterprint = () => {
+    document.title = origTitle;
+  };
+
+  window.print();
 }
 
 function resetData() {
